@@ -47,3 +47,42 @@ module ListItem = {
     external make: (~textSize: string, ~children: React.element) => React.element = "ListItem";
 };
 
+[@bs.deriving abstract]
+type tableStyle = {
+    [@bs.optional] border: string
+};
+
+module Table = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~style: tableStyle, ~children: React.element) => React.element = "Table";
+};
+
+module Tr = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~style: tableStyle, ~children: React.element) => React.element = "TableRow";
+};
+
+module Td = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~style: tableStyle, ~children: React.element) => React.element = "TableItem";
+};
+
+module Thead = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~style: tableStyle, ~children: React.element) => React.element = "TableHeader";
+};
+
+module Th = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~style: tableStyle, ~children: React.element) => React.element = "TableHeaderItem";
+};
+
+module TableBody = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~children: React.element) => React.element = "TableBody";
+};
+
+module Image = {
+    [@bs.module "spectacle"][@react.component]
+    external make: (~width: string, ~src: string) => React.element = "Image";
+};

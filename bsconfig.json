@@ -17,10 +17,5 @@
   "bs-dependencies": [
     "reason-react"
   ],
-  "refmt": 3,
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  }
+  "refmt": 3
 }

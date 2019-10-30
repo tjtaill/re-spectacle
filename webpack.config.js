@@ -5,6 +5,19 @@ const outputDir = path.join(__dirname, 'build/');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  module: {
+    rules: [
+        {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+            {
+            loader: 'file-loader',
+            options: {},
+            },
+        ],
+        },
+    ],
+  },
   entry: './src/Index.bs.js',
   mode: isProd ? 'production' : 'development',
   output: {
@@ -17,9 +30,6 @@ module.exports = {
       inject: false
     })
   ],
-  resolve: {
-    extensions: ['*', '.js']
-  },
   devServer: {
     compress: true,
     contentBase: outputDir,
