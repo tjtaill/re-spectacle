@@ -14,7 +14,7 @@ let codeTagProps = SyntaxHighlighter.codeStyle(~style=textStyle);
 
 let whatIsReason: string = [%raw {| require('./images/whatIsReason1.png')|}];
 let whyReason3: string = [%raw {| require('./images/whyReason3.png')|}];
-let whyReason1: string = [%raw {| require('./images/whyReason1.png')|}];
+let whyReason1: string = [%raw {| require('./images/wilsonCurve.jpg')|}];
 let whyReason2: string = [%raw {| require('./images/whyReason2.png')|}];
 
 [@react.component]
@@ -254,7 +254,7 @@ let {firstName} = p1;|js})}
         </Slide>
         <Slide>
             <Heading size>{rs("Reasons for Reason")}</Heading>
-            <Image width="75%" src=whyReason1/>
+            <Image width="100%" src=whyReason1/>
         </Slide>
         <Slide>
             <Heading size>{rs("More Reasons for Reason")}</Heading>
@@ -280,18 +280,66 @@ switch(favNums) {
             </SyntaxHighlighter>
         </Slide>
          <Slide>
-            <Heading size>{rs("Reason powerful Sum types")}</Heading>
+            <Heading size>{rs("Reason powerful Variant Sum types")}</Heading>
             <SyntaxHighlighter codeTagProps customStyle language="reason">
-{rs({js|type status = Success(string) | Wrong(string);
-let ok = Success("ok");
-switch(ok) { /* pattern matching evaluates to unit */
-    | Success(str) => print_string(str ++ "\\n")
-    | Wrong(str) => raise(Failure(str))
+{rs({js|type option('a) = Some('a) | None;
+type result('a, 'b) = Ok('a) | Error('b);
+
+let ndiv = (x, y) => {
+    switch(y) {
+    | 0 => None
+    | _ => Some(x/y)
+    }
 };
-/* exhaustive pattern matching makes handling None and errors
-very type safe */
-/* standard useful variants option, Belt.Option, Belt.Result
-Tablecloth.Option, Tablecloth.Result */|js})}
+
+let ediv = (x, y) => {
+    switch(y) {
+    | 0 => Error("Can not divide by zero")
+    | _ => Ok(x/y)
+    }
+};
+
+let e = ediv(1, 0);
+
+switch(e) {
+| Error(err) => print_endline(err)
+| Ok(quotient) => {
+        print_int(quotient);
+        print_newline();
+    }
+}|js})}
+            </SyntaxHighlighter>
+        </Slide>
+        <Slide>
+            <Heading size>{rs("Compose Results Variants")}</Heading>
+            <SyntaxHighlighter codeTagProps customStyle language="reason">
+{rs({js|let map = (r, f) => {
+    switch(r) {
+    | Error(err) => Error(err)
+    | Ok(a) => Ok(f(a))
+    }
+};
+
+let flatMap = (r, f) => {
+    switch(r) {
+    | Error(err) => Error(err)
+    | Ok(a) => f(a)
+    }
+};
+
+let lift1 = (f) => {
+    (a) => {
+        switch(a) {
+        | Error(err) => Error(err)
+        | Ok(b) => Ok(f(b))
+        }
+    }
+};
+
+let r1 = map(Ok(41), a => a + 1);
+let r2 = flatMap(Ok(41), a => Ok(string_of_int(a)));
+let f1: result(int, string) => result(int, string) = lift1(a => a + 1);
+let r3 = f1(Ok(1));|js})}
             </SyntaxHighlighter>
         </Slide>
         <Slide>
@@ -328,12 +376,12 @@ let oli = { name, age }; /* - : person = {name: "Olivia", age: 1} */|js})}
         <Slide>
             <Heading size>{rs("Reason Tuples")}</Heading>
             <SyntaxHighlighter codeTagProps customStyle language="reason">
-{rs({js|let tupleSrc = {js|/* keyword type lets you create types or type aliases */
+{rs({js|/* keyword type lets you create types or type aliases */
 type intPair = (int, int);
 let favPrimes : intPair = (31, 37);
 /* destructure */
 let (first, second) = favPrimes;
-/* String, Js.String modules */|js})}
+/* Tablecloth.Tuple2, Tablecloth.Tuple3 */|js})}
             </SyntaxHighlighter>
         </Slide>
          <Slide>
@@ -351,7 +399,7 @@ type person = {
 };
 let troy = {name: "Troy", "age": 45};
 let isBirthday = true;
-troy.age = isBirthday ? troy.age : troy.age + 1;
+troy.age = isBirthday ? troy.age + 1 : troy.age;
 |js})}
             </SyntaxHighlighter>
         </Slide>
