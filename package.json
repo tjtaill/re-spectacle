@@ -24,7 +24,7 @@
     "react-dom": "^16.8.1",
     "react-syntax-highlighter": "^11.0.2",
     "reason-react": ">=0.7.0",
-    "spectacle": "^5.7.1"
+    "spectacle": "^9.6.0"
   },
   "devDependencies": {
     "bs-platform": "^5.0.6",
